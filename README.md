@@ -1,6 +1,8 @@
 # Boswell
 A ChatGPT-based personal life story interviewer written in Swift for iOS.  Named for the famous biographer James Boswell.
 
+v01: basic ChatGPT conversation (with voice) on iOS
+
 Here is the ChatGPT-4 conversation that generated this code:
 
 ---------
