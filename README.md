@@ -5,8 +5,8 @@ Here is the ChatGPT-4 conversation that generated this code:
 
 ---------
 
-TED BARNETT: 
-- I would like to write an iPhone application that will enable me to talk (with my voice) to the GPT system.  I would like the response to be provided in both text and audio form, ideally though the Siri voice system on the iPhone, but using whatever text-to-speech system is appropriate.  How should I go about building this?
+TED BARNETT:
+## I would like to write an iPhone application that will enable me to talk (with my voice) to the GPT system.  I would like the response to be provided in both text and audio form, ideally though the Siri voice system on the iPhone, but using whatever text-to-speech system is appropriate.  How should I go about building this?
 
 ChatGPT: 
 - To create an iPhone application that enables you to talk to the GPT system using your voice and receive responses in both text and audio form, you should follow these steps: 
@@ -32,7 +32,7 @@ Here's a high-level outline of how your code should be structured:
 By following these steps, you should be able to create an iPhone application that allows you to interact with the GPT system using your voice, and receive responses in both text and audio form.
 
 TED BARNETT: 
-- Can you generate Swift code for that code, just for #1 above?
+## Can you generate Swift code for that code, just for #1 above?
 
 ChatGPT: 
 - Sure, here's a Swift code snippet to configure and request microphone access for your iOS app:
@@ -87,7 +87,7 @@ Additionally, you need to add a key-value pair to your app's `Info.plist` file t
 With these code snippets in place, your app will request microphone access when it starts. If the user grants permission, you'll see "Microphone access granted" printed in the console. If not, you'll see "Microphone access denied," and you can show an alert to inform the user that microphone access is required for your app to function properly.
 
 TED BARNETT: 
-- Code for #2?
+## Code for #2?
 
 ChatGPT: 
 - Here's the Swift code to set up a new Xcode project and create a simple user interface for your app: 
@@ -127,7 +127,7 @@ In `Main.storyboard`, control-drag from the text view to the `textView` outlet i
 Now you have a simple user interface with a text view to display the conversation and a button to start/stop voice input. In the next steps, you'll add the code to implement voice recognition and other functionalities as described in the previous answers.
 
 TED BARNETT: 
-- I actually wanted code for item 2 on your last list above ("Here's a high-level outline of how your code should be structured")
+## I actually wanted code for item 2 on your last list above ("Here's a high-level outline of how your code should be structured")
 
 ChatGPT: 
 - Apologies for the confusion. Here's the Swift code snippet for setting up speech recognition and starting to listen when the user taps the button (step 2 in the high-level outline):
@@ -272,7 +272,7 @@ func startRecording() {
 Now when you tap the record button, the app will start listening and transcribing your speech in real
 
 TED BARNETT: 
-- and code for step 3 in the high-level outline?
+## and code for step 3 in the high-level outline?
 
 ChatGPT: 
 - Here's the Swift code snippet for step 3 in the high-level outline, which sends the user's voice input (converted to text) to the OpenAI API:
@@ -358,7 +358,7 @@ func sendToOpenAI(text: String, completion: @escaping (String?, Error?) -> Void)
 Now, when the user stops talking, the app will send the text input to the OpenAI API and display the AI's response in the text view. Note that this example uses the OpenAI API v1, which might not be the latest version at the time you implement this. Be sure to check OpenAI's official API documentation to ensure you're using the latest version and features.
 
 TED BARNETT: 
-- Thanks.  Can you provide code for step 4 in the high-level outline?
+## Thanks.  Can you provide code for step 4 in the high-level outline?
 
 ChatGPT: 
 - Here's the Swift code snippet for step 4 in the high-level outline, which converts the GPT system's response to speech using AVSpeechSynthesizer:
@@ -406,7 +406,7 @@ sendToOpenAI(text: textView.text) { response, error in
 Now, when the app receives the AI's response, it will not only display the response in the text view but also speak it using the AVSpeechSynthes
 
 TED BARNETT: 
-- Can you provide code for step 5 in the high-level outline?
+## Can you provide code for step 5 in the high-level outline?
 
 ChatGPT: 
 - Here's the Swift code snippet for step 5 in the high-level outline, which stores the conversation history and appends new responses:
@@ -448,7 +448,7 @@ sendToOpenAI(text: textView.text) { response, error in
 Now, the app will store the conversation history in the `conversationHistory` array and display the full conversation in the text view. Whenever a new interaction takes place, the user's input and the AI's response will be appended to the conversation history.
 
 TED BARNETT: 
-- Is that all of Step 5 above?
+## Is that all of Step 5 above?
 
 ChatGPT: 
 - Yes, that's all for step 5. The provided code snippet maintains the conversation history by storing it in the `conversationHistory` array and updates the text view to display the full conversation, including both user inputs and AI responses.
@@ -461,7 +461,7 @@ Here's a summary of the code changes for step 5:
 With these changes, the app can keep track of the entire conversation and display it in the text view.
 
 TED BARNETT: 
-- When I implement the 5 steps above in Xcode, do I copy all of these code snippets into a single file?  If not, what files are they each stored in?
+## When I implement the 5 steps above in Xcode, do I copy all of these code snippets into a single file?  If not, what files are they each stored in?
 
 ChatGPT: 
 - When implementing the 5 steps in Xcode, you can put most of the code snippets in a single file, which is the view controller file that manages the main screen of your app, usually named `ViewController.swift`.
@@ -476,7 +476,7 @@ Here's a summary of where each code snippet should be placed:
 By placing
 
 TED BARNETT: 
-- I think you didn't finish that last answer.  Please provide the missing text after "By placing".
+## I think you didn't finish that last answer.  Please provide the missing text after "By placing".
 
 ChatGPT: 
 - Apologies for the incomplete response. Here's the continuation:
