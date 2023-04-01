@@ -5,8 +5,7 @@ Here is the ChatGPT-4 conversation that generated this code:
 
 ---------
 
-
-Person: 
+TED BARNETT: 
 - I would like to write an iPhone application that will enable me to talk (with my voice) to the GPT system.  I would like the response to be provided in both text and audio form, ideally though the Siri voice system on the iPhone, but using whatever text-to-speech system is appropriate.  How should I go about building this?
 
 ChatGPT: 
@@ -32,7 +31,7 @@ Here's a high-level outline of how your code should be structured:
 
 By following these steps, you should be able to create an iPhone application that allows you to interact with the GPT system using your voice, and receive responses in both text and audio form.
 
-Person: 
+TED BARNETT: 
 - Can you generate Swift code for that code, just for #1 above?
 
 ChatGPT: 
@@ -87,7 +86,7 @@ Additionally, you need to add a key-value pair to your app's `Info.plist` file t
 
 With these code snippets in place, your app will request microphone access when it starts. If the user grants permission, you'll see "Microphone access granted" printed in the console. If not, you'll see "Microphone access denied," and you can show an alert to inform the user that microphone access is required for your app to function properly.
 
-Person: 
+TED BARNETT: 
 - Code for #2?
 
 ChatGPT: 
@@ -127,7 +126,7 @@ In `Main.storyboard`, control-drag from the text view to the `textView` outlet i
 
 Now you have a simple user interface with a text view to display the conversation and a button to start/stop voice input. In the next steps, you'll add the code to implement voice recognition and other functionalities as described in the previous answers.
 
-Person: 
+TED BARNETT: 
 - I actually wanted code for item 2 on your last list above ("Here's a high-level outline of how your code should be structured")
 
 ChatGPT: 
@@ -272,7 +271,7 @@ func startRecording() {
 
 Now when you tap the record button, the app will start listening and transcribing your speech in real
 
-Person: 
+TED BARNETT: 
 - and code for step 3 in the high-level outline?
 
 ChatGPT: 
@@ -358,7 +357,7 @@ func sendToOpenAI(text: String, completion: @escaping (String?, Error?) -> Void)
 
 Now, when the user stops talking, the app will send the text input to the OpenAI API and display the AI's response in the text view. Note that this example uses the OpenAI API v1, which might not be the latest version at the time you implement this. Be sure to check OpenAI's official API documentation to ensure you're using the latest version and features.
 
-Person: 
+TED BARNETT: 
 - Thanks.  Can you provide code for step 4 in the high-level outline?
 
 ChatGPT: 
@@ -406,7 +405,7 @@ sendToOpenAI(text: textView.text) { response, error in
 
 Now, when the app receives the AI's response, it will not only display the response in the text view but also speak it using the AVSpeechSynthes
 
-Person: 
+TED BARNETT: 
 - Can you provide code for step 5 in the high-level outline?
 
 ChatGPT: 
@@ -448,7 +447,7 @@ sendToOpenAI(text: textView.text) { response, error in
 
 Now, the app will store the conversation history in the `conversationHistory` array and display the full conversation in the text view. Whenever a new interaction takes place, the user's input and the AI's response will be appended to the conversation history.
 
-Person: 
+TED BARNETT: 
 - Is that all of Step 5 above?
 
 ChatGPT: 
@@ -461,7 +460,7 @@ Here's a summary of the code changes for step 5:
 
 With these changes, the app can keep track of the entire conversation and display it in the text view.
 
-Person: 
+TED BARNETT: 
 - When I implement the 5 steps above in Xcode, do I copy all of these code snippets into a single file?  If not, what files are they each stored in?
 
 ChatGPT: 
@@ -476,7 +475,7 @@ Here's a summary of where each code snippet should be placed:
 
 By placing
 
-Person: 
+TED BARNETT: 
 - I think you didn't finish that last answer.  Please provide the missing text after "By placing".
 
 ChatGPT: 
