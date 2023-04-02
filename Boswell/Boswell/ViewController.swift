@@ -8,22 +8,20 @@
 import UIKit
 import AVFoundation
 import Speech
-
 import Foundation
-
-
 
 class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var listeningStatus: UILabel!
     
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
-    private let speechSynthesizer = AVSpeechSynthesizer()
+    let speechSynthesizer = AVSpeechSynthesizer()
     private var conversationHistory: [String] = []
     
     // Replace YOUR_API_KEY with your actual OpenAI API key
@@ -32,8 +30,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.textView.layer.borderColor = UIColor.lightGray.cgColor
-        self.textView.layer.borderWidth = 1
+        // self.textView.layer.borderColor = UIColor.lightGray.cgColor
+        // self.textView.layer.borderWidth = 1
         
         requestMicrophoneAccess()
         configureSpeechRecognition()
@@ -116,7 +114,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         audioEngine.prepare()
         try? audioEngine.start()
 
-        textView.text = "(Listening...)"
+        listeningStatus.text = "Listening..."
     }
 
     
@@ -140,6 +138,9 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         
                         // Update the text view with the full conversation history
                         self.textView.text = self.conversationHistory.joined(separator: "\n")
+                        
+                        // Clear the listeningStatus
+                        self.listeningStatus.text = ""
                         
                         // Speak the AI's response
                         self.speak(text: aiResponse)
@@ -172,6 +173,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         request.httpBody = try? JSONSerialization.data(withJSONObject: requestData, options: [])
         
         // print("Sending to OpenAI: \(requestData)")
+        
+        self.listeningStatus.text = "Thinking..."
 
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -194,11 +197,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                 }
             }
         }
-        
-
-
-
-        
         task.resume()
     }
 
@@ -209,5 +207,4 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         speechUtterance.rate = 0.5
         speechSynthesizer.speak(speechUtterance)
     }
-
 }
