@@ -1,13 +1,18 @@
 # Boswell
-A ChatGPT-based personal life story interviewer written in Swift for iOS.  Named for the famous biographer James Boswell.
+A ChatGPT-based iOS voice app written by ChatGPT-4 (with help from Ted Barnett).  Final version will include a personal life story interviewer that will generate a voice-and-text biography for the user.  Named after the 18th-century biographer [James Boswell](https://en.wikipedia.org/wiki/James_Boswell).
 
 v01: basic ChatGPT conversation (with voice) on iOS
+Future versions: See Issues list for future features
 
-Here is the ChatGPT-4 conversation that generated this code:
+Note: before running this app on your iPhone, you will need to edit ViewController.swift and replace the text "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" with a [valid OpenAI API key](https://platform.openai.com/account/api-keys).
+
+Attached below is the full ChatGPT-4 conversation (including errors, apologies, and corrections from ChatGPT) that generated this code:
 
 ---------
+# ChatGPT-4 Conversation
 
-TED BARNETT:
+
+TED BARNETT: 
 ## I would like to write an iPhone application that will enable me to talk (with my voice) to the GPT system.  I would like the response to be provided in both text and audio form, ideally though the Siri voice system on the iPhone, but using whatever text-to-speech system is appropriate.  How should I go about building this?
 
 ChatGPT: 
@@ -485,8 +490,8 @@ ChatGPT:
 
 By placing all the code snippets in the `ViewController.swift` file, you can keep the implementation organized and focused on the main view controller that manages your app's primary functionality. If your app becomes more complex or requires additional view controllers, you might consider creating separate files for each distinct functionality. For instance, you could create a dedicated file for handling API interactions or managing speech recognition. However, for this relatively simple app, organizing the code snippets within the `ViewController.swift` file should be sufficient.
 
-Person: 
-- Could you provide a complete copy of ViewController.swift that includes all of the snippets in the order they should appear?
+TED BARNETT: 
+## Could you provide a complete copy of ViewController.swift that includes all of the snippets in the order they should appear?
 
 ChatGPT: 
 - Here's a complete `ViewController.swift` file with all the code snippets in the correct order:
@@ -541,8 +546,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                     self.recordButton
 ```
 
-Person: 
-- I think you truncated the last reply.  Could you try that again?
+TED BARNETT: 
+## I think you truncated the last reply.  Could you try that again?
 
 ChatGPT: 
 - Apologies for the truncation. Here's the complete `ViewController.swift` file with all the code snippets in the correct order:
@@ -624,8 +629,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
 Remember to add the implementations for the `startRecording()`, `recordButtonTapped(_:)`, `sendToOpenAI(text:completion:)`, and `speak(text:)` functions as shown in the previous answers. This file contains all the necessary code snippets for your app, organized in the proper order.
 
-Person: 
-- Don't I also need to call configureSpeechRocognition() as well in the viewDidLoad() method?
+TED BARNETT: 
+## Don't I also need to call configureSpeechRocognition() as well in the viewDidLoad() method?
 
 ChatGPT: 
 - You're correct. I apologize for missing that in the previous response. You should call `configureSpeechRecognition()` in the `viewDidLoad()` method. Here's the updated `viewDidLoad()` method:
@@ -643,8 +648,8 @@ override func viewDidLoad() {
 
 With this change, the `configureSpeechRecognition()` function will be called when the view controller's view is loaded, ensuring that speech recognition is properly set up and configured.
 
-Person: 
-- Can you provide all of the code that should be in the sendToOpenAI() function?
+TED BARNETT: 
+## Can you provide all of the code that should be in the sendToOpenAI() function?
 
 ChatGPT: 
 - Certainly! Here's the complete `sendToOpenAI(text:completion:)` function:
@@ -702,8 +707,8 @@ Add this function to your `ViewController.swift` file. This function sends the u
 
 Please note that this example uses the OpenAI API v1, which might not be the latest version at the time you implement this. Be sure to check OpenAI's official API documentation to ensure you're using the latest version and features.
 
-Person: 
-- this version does not include the "self.speak()" that appeared in your earlier version of the sendToOpenAI code.  Is that an omission or is it no longer needed to enable text-to-speech?
+TED BARNETT: 
+## this version does not include the "self.speak()" that appeared in your earlier version of the sendToOpenAI code.  Is that an omission or is it no longer needed to enable text-to-speech?
 
 ChatGPT: 
 - You're correct, my previous response omitted the call to `self.speak()` in the completion handler of the `sendToOpenAI(text:completion:)` function. I apologize for the oversight. The call to `self.speak()` is needed to enable text-to-speech for the AI's response.
@@ -737,8 +742,8 @@ sendToOpenAI(text: textView.text) { response, error in
 
 Add this code to the completion handler of the `sendToOpenAI(text:completion:)` function in your `ViewController.swift` file. This will ensure that the AI's response is converted to speech using the `speak(text:)` function.
 
-Person: 
-- I don't understand exactly how to incorporate this code snippet.  Could you provide a complete version of the code for the sendToOpenAI() function that includes this last snippet in the proper location?
+TED BARNETT: 
+## I don't understand exactly how to incorporate this code snippet.  Could you provide a complete version of the code for the sendToOpenAI() function that includes this last snippet in the proper location?
 
 ChatGPT: 
 - Apologies for the confusion. I realize now that my previous response was not clear. You don't need to modify the `sendToOpenAI(text:completion:)` function itself. Instead, you should include the completion handler with the call to `self.speak()` in the `recordButtonTapped(_:)` action.
@@ -784,8 +789,8 @@ Here's the updated `recordButtonTapped(_:)` action with the completion handler t
 
 This way, when the user taps the record button and the recording stops, the app sends the user's input to the OpenAI API and handles the AI's response in the completion handler. The AI's response is then spoken using the `speak(text:)` function. The `sendToOpenAI(text:completion:)` function remains unchanged.
 
-Person: 
-- Thanks.  the code line that reads 'let userInput = "You: \(self.textView.text)"' is generating a warning in Xcode reading 'String interpolation produces a debug description for an optional value; did you mean to make this explicit?'.  Do I need to change this line to eliminate the warning?
+TED BARNETT: 
+## Thanks.  the code line that reads 'let userInput = "You: \(self.textView.text)"' is generating a warning in Xcode reading 'String interpolation produces a debug description for an optional value; did you mean to make this explicit?'.  Do I need to change this line to eliminate the warning?
 
 ChatGPT: 
 - Apologies for the oversight. The warning is generated because `textView.text` is an optional value, and it's being used directly in the string interpolation. To resolve this warning, you can use the nil-coalescing operator (`??`) to provide a default value in case `textView.text` is `nil`.
@@ -801,8 +806,8 @@ let userInput = "You: \(self.textView.text ?? "")"
 
 By providing an empty string as a default value, you ensure that if `textView.text` is `nil`, the empty string will be used, and the warning should be resolved.
 
-Person: 
-- Okay.  It is compiling and building properly.  However, when I run the application, I get the following warning indicated (and Xcode highlights the line "@main"): '[<LifeStory.ViewController 0x143f047a0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key LabelText'
+TED BARNETT: 
+## Okay.  It is compiling and building properly.  However, when I run the application, I get the following warning indicated (and Xcode highlights the line "@main"): '[<LifeStory.ViewController 0x143f047a0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key LabelText'
 
 ChatGPT: 
 - This error typically occurs when there is an issue with your Interface Builder (Storyboard or XIB) connections to the code, specifically when an IBOutlet, IBAction, or other connection is not properly set up or is misconfigured.
@@ -818,8 +823,8 @@ It seems like there is a connection referencing the key `LabelText`, but it's no
 
 After removing the problematic connection and ensuring that your connections are set up correctly, the error should be resolved, and your app should run without any issues.
 
-Person: 
-- where do i find the Interface Builder?
+TED BARNETT: 
+## where do i find the Interface Builder?
 
 ChatGPT: 
 - Interface Builder is integrated into Xcode and is used to visually design and create your app's user interface. You can find it when you open your storyboard or XIB file in Xcode.
@@ -830,3 +835,460 @@ To open Interface Builder in Xcode, follow these steps:
 3. Click on the `Main.storyboard` file (or the relevant `.xib` file). Xcode will open the Interface Builder, and you'll see the visual representation of your app's user interface.
 
 In Interface Builder, you can add, modify, or remove UI elements, as well as create and manage connections to your code, such as IBOutlet and IBAction connections. You can also customize various properties of the UI elements and set up Auto Layout constraints for responsive layouts.
+
+TED BARNETT: 
+## I am now getting this error: "LifeStory.ViewController 0x103407540> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key LabelText"
+
+ChatGPT: 
+- This error is usually caused by an incorrect connection between your Interface Builder (Storyboard or XIB) and the view controller's code. It looks like there is a connection referencing the key `LabelText`, but it's not defined in your `ViewController` class.
+
+To resolve this issue, follow these steps:
+1. Open your Xcode project. 
+2. In the Project Navigator on the left side, click on the `Main.storyboard` file (or the relevant `.xib` file). Xcode will open the Interface Builder. 
+3. Select the view controller that is causing the problem (in this case, it should be `ViewController`).
+4. Open the Connections Inspector in the right panel (the icon looks like a circle with an arrow pointing right).
+5. Check for any connections with a yellow warning triangle icon, which indicates that the connection is referencing an undefined key or property.
+6. Remove any connections with a yellow warning triangle by clicking on the "x" button next to the connection.
+
+After removing the problematic connection and ensuring that your connections are set up correctly, the error should be resolved, and your app should run without any issues.
+
+If you still have any issues or can't find the problematic connection, you may want to double-check the connections between your UI elements and your `ViewController` class's code in the Interface Builder. Ensure that any IBOutlet or IBAction references are correctly connected and have the proper names.
+
+TED BARNETT: 
+## what do you mean "have the proper name"?
+
+ChatGPT: 
+- By "have the proper name," I mean that the name of the IBOutlet or IBAction in your Interface Builder should match the name of the corresponding property or method in your `ViewController` class's code.
+
+For example, if you have a UILabel in your Interface Builder and an IBOutlet in your `ViewController` class like this:
+
+```swift
+
+@IBOutlet weak var myLabel: UILabel!
+```
+
+
+
+The connection in Interface Builder should have the name `myLabel`, and it should be connected to the UILabel. If the name in Interface Builder does not match the name in your code, you may encounter errors like the one you're experiencing.
+
+To ensure that the connections have the proper names, follow these steps: 
+1. Open your Xcode project and click on the `Main.storyboard` file (or the relevant `.xib` file) to open the Interface Builder. 
+2. Select a UI element (e.g., UILabel) that is connected to an IBOutlet or IBAction in your `ViewController` class.
+3. Open the Connections Inspector in the right panel (the icon looks like a circle with an arrow pointing right). 
+4. Check the connections listed under "Referencing Outlets" (for IBOutlet) or "Sent Events" (for IBAction). Make sure that the name of the connection matches the name of the corresponding property or method in your `ViewController` class's code.
+
+If you find any discrepancies, you can remove the incorrect connection by clicking on the "x" button next to the connection in the Connections Inspector. Then, create a new connection by clicking on the small circle next to the IBOutlet or IBAction name in the Connections Inspector and dragging it to the correct UI element in Interface Builder.
+
+TED BARNETT: 
+## I don't see  a key called "LabelText" anywhere in my code.  How do I find it?
+
+ChatGPT: 
+- If you can't find the "LabelText" key in your code, it's possible that the problematic connection is hidden in your Interface Builder (Storyboard or XIB file). To find and remove the "LabelText" key, follow these steps: 
+1. Open your Xcode project and click on the `Main.storyboard` file (or the relevant `.xib` file) to open the Interface Builder. 
+2. Click on the view controller that is causing the issue (in this case, it should be `ViewController`).
+3. In the right panel, click on the "Identity Inspector" tab (the icon looks like a circle with an "i" inside it). 
+4. Under "User Defined Runtime Attributes," look for a row with a key named `LabelText`. If you find it, select the row and click on the "-" (minus) button at the bottom to remove the row.
+
+If you can't find a `LabelText` key in the "User Defined Runtime Attributes" section, try searching for it in the Connections Inspector: 
+1. With the `ViewController` still selected, click on the "Connections Inspector" tab in the right panel (the icon looks like a circle with an arrow pointing right).
+2. Check for any connections with a yellow warning triangle icon, which indicates that the connection is referencing an undefined key or property. Look for any connection with the "LabelText" key.
+3. If you find a connection with the "LabelText" key, remove it by clicking on the "x" button next to the connection.
+
+After removing the problematic "LabelText" key, the error should be resolved, and your app should run without any issues. If you still can't find the "LabelText" key, double-check all the connections in your Interface Builder and ensure that they are correctly set up.
+
+TED BARNETT: 
+## I do not see a circle with an "i" inside it as described above.  Is there another way to open the Identity Inspector?
+
+ChatGPT: 
+- Apologies for the confusion. The "Identity Inspector" icon has changed in the latest versions of Xcode. I'll provide you with the updated steps to open the "Identity Inspector" in Xcode: 
+1. Open your Xcode project and click on the `Main.storyboard` file (or the relevant `.xib` file) to open the Interface Builder. 
+2. Click on the view controller that is causing the issue (in this case, it should be `ViewController`).
+3. In the right panel, click on the "Identity Inspector" tab. It is the third tab from the left, with an icon that looks like a small ID card.
+
+Once you have the "Identity Inspector" open, follow the steps in my previous response to locate and remove the "LabelText" key from the "User Defined Runtime Attributes" section.
+
+If you still can't find the "LabelText" key or are unable to resolve the issue, it might be helpful to look through your storyboard's source code (XML) to locate the problematic connection: 
+1. In the Project Navigator, right-click (or Control-click) on the `Main.storyboard` file (or the relevant `.xib` file).
+2. Select "Open As" and then click on "Source Code" in the context menu. 
+3. In the source code, search for the "LabelText" key by pressing `Cmd + F` and typing "LabelText" into the search bar.
+4. If you find the "LabelText" key, carefully delete the line of code containing it. Make sure not to delete any other parts of the XML structure.
+
+After making these changes, save the file, switch back to Interface Builder by right-clicking on the file and selecting "Open As" > "Interface Builder - Storyboard" (or "Interface Builder - XIB"), and then try running the app again.
+
+TED BARNETT: 
+## The app is now building and launching on my iPhone.  However, after I press the button recordButton and speak text into the microphone, it is correctly converted to text, but when I then click the recordButton again to stop the recording, I see the message "Error: Invalid response" displayed in the textView.  Does this mean that the OpenAI interface is not set up correctly?
+
+ChatGPT: 
+- The "Error: Invalid response" message suggests that there might be an issue with the OpenAI API response or the handling of the response in the `sendToOpenAI()` function. It's possible that there's a problem with the API call, or the response from the OpenAI API might have an unexpected format.
+
+To further diagnose this issue, I recommend adding print statements to your `sendToOpenAI()` function to get more information about the API call and response:
+1. Add a print statement before the API call to display the input text:
+
+```swift
+
+print("Sending to OpenAI: \(inputText)")
+```
+
+ 
+1. Add a print statement in the `completionHandler` closure to display the raw response from the OpenAI API:
+
+```swift
+
+print("Raw response from OpenAI: \(String(data: data, encoding: .utf8) ?? "Unable to decode response")")
+```
+
+ 
+1. Add a print statement in the `catch` block to display any errors that occur during the JSON decoding process:
+
+```swift
+
+print("Error decoding JSON: \(error.localizedDescription)")
+```
+
+
+
+Update your `sendToOpenAI()` function to include these print statements, then run your app again and test the functionality. Check the Xcode console (or device logs) to see the printed output, which should give you more information about the issue.
+
+If the API call is successful, you should see the input text being sent to OpenAI and a valid JSON response from the API. If there's an issue with the API call, you might see an error message in the response or an issue with the JSON decoding. Based on the output, you can further determine what might be causing the problem and make the necessary adjustments to your code.
+
+Additionally, ensure that your API key is set correctly in the `API_KEY` constant and that you're using the appropriate API endpoint for the GPT model you want to use.
+
+TED BARNETT: 
+## Which line in my code is the API call to OpenAI?
+
+ChatGPT: 
+- In your code, the API call to OpenAI is made using the `URLSession.shared.dataTask(with:completionHandler:)` method. Here's the relevant portion of the `sendToOpenAI()` function:
+
+```swift
+
+URLSession.shared.dataTask(with: request) { data, response, error in
+    // Handle the response here
+}.resume()
+```
+
+
+
+This method creates a data task that retrieves the contents of the specified URL (the OpenAI API endpoint) and calls the completion handler when the task finishes. The `request` object contains the necessary information for the API call, such as the URL, HTTP method, headers, and request body.
+
+When the API call completes, the `completionHandler` closure is executed, and it receives the `data`, `response`, and `error` parameters. Inside this closure, you handle the API response, such as decoding the JSON data and updating the UI with the received information.
+
+TED BARNETT: 
+## Can you provide an updated version of the sendToOpenAI that includes these 3 print statements (with the correct variable names)?
+
+ChatGPT: 
+- Here's an updated version of the `sendToOpenAI()` function with the three print statements added:
+
+```swift
+
+func sendToOpenAI(inputText: String) {
+    guard let apiKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"] else {
+        print("Error: Missing OpenAI API key")
+        return
+    }
+
+    let headers = [
+        "Content-Type": "application/json",
+        "Authorization": "Bearer \(apiKey)"
+    ]
+
+    let body: [String: Any] = [
+        "model": "text-davinci-002",
+        "prompt": inputText,
+        "max_tokens": 150,
+        "n": 1,
+        "stop": ["\n"],
+        "temperature": 0.5
+    ]
+
+    guard let url = URL(string: "https://api.openai.com/v1/engines/davinci-codex/completions") else {
+        print("Error: Invalid URL")
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.allHTTPHeaderFields = headers
+    request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
+
+    print("Sending to OpenAI: \(inputText)")
+
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error: \(error.localizedDescription)")
+            return
+        }
+
+        guard let data = data else {
+            print("Error: Data is nil")
+            return
+        }
+
+        print("Raw response from OpenAI: \(String(data: data, encoding: .utf8) ?? "Unable to decode response")")
+
+        do {
+            let decoder = JSONDecoder()
+            let result = try decoder.decode(OpenAIResponse.self, from: data)
+            DispatchQueue.main.async {
+                self.textView.text = self.textView.text + "\nAI: \(result.choices[0].text.trimmingCharacters(in: .whitespacesAndNewlines))"
+            }
+        } catch {
+            print("Error decoding JSON: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.textView.text = "Error: Invalid response"
+            }
+        }
+    }.resume()
+}
+```
+
+
+
+This updated version includes the three print statements for displaying the input text being sent to OpenAI, the raw response from the OpenAI API, and any errors that occur during JSON decoding. After you add this version to your code and run the app, you can check the Xcode console (or device logs) for the printed output. The output should help you diagnose any issues related to the OpenAI API call and response handling.
+
+TED BARNETT: 
+## Is this code in your last response written in Swift, which is what I am using?
+
+ChatGPT: 
+- Yes, the code provided in my last response is written in Swift, which is the language you are using for your iPhone application. It is an updated version of the `sendToOpenAI()` function that includes the three print statements to help you diagnose any issues related to the OpenAI API call and response handling. You can add this function to your `ViewController` class and run the app to see the printed output in the Xcode console (or device logs).
+
+TED BARNETT: 
+## I replaced sendToOpenAI() with your suggested code above, but now see this error: "Cannot find 'OpenAIResponse' in scope" on the line that reads "let result = try decoder.decode(OpenAIResponse.self, from: data)"
+
+ChatGPT: 
+- Apologies for the oversight. I missed providing you with the `OpenAIResponse` struct, which is required for decoding the JSON response from the OpenAI API. Please add the following struct to your `ViewController.swift` file, preferably outside the `ViewController` class:
+
+```swift
+
+struct OpenAIResponse: Codable {
+    let id: String
+    let object: String
+    let created: Int
+    let model: String
+    let usage: Usage
+    let choices: [Choice]
+
+    struct Usage: Codable {
+        let prompt_tokens: Int
+        let completion_tokens: Int
+        let total_tokens: Int
+    }
+
+    struct Choice: Codable {
+        let text: String
+        let index: Int
+        let logprobs: JSONNull?
+        let finish_reason: String
+    }
+}
+
+struct JSONNull: Codable {
+    init(from decoder: Decoder) throws {
+        if let _ = try? decoder.singleValueContainer().decodeNil() {
+            return
+        }
+        throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Not a JSON null value"))
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encodeNil()
+    }
+}
+```
+
+
+
+This struct defines the expected structure of the JSON response from the OpenAI API, which is necessary for decoding the data using the `JSONDecoder` in the `sendToOpenAI()` function.
+
+After you add the `OpenAIResponse` and `JSONNull` structs to your code, the "Cannot find 'OpenAIResponse' in scope" error should be resolved, and you should be able to build and run your app without any issues.
+
+TED BARNETT: 
+## Can I add these struct definitions just before the line that begins "class ViewController..."?
+
+ChatGPT: 
+- Yes, you can add the `OpenAIResponse` and `JSONNull` struct definitions just before the line that begins "class ViewController...". This will make the structs available within the scope of the file, and you can use them in your `ViewController` class.
+
+Here's how your code should look:
+
+```swift
+
+import UIKit
+import Speech
+
+struct OpenAIResponse: Codable {
+    // ... (rest of the OpenAIResponse struct)
+}
+
+struct JSONNull: Codable {
+    // ... (rest of the JSONNull struct)
+}
+
+class ViewController: UIViewController {
+    // ... (rest of your ViewController class)
+}
+```
+
+
+
+By adding the structs in this way, you should be able to build and run your app without encountering the "Cannot find 'OpenAIResponse' in scope" error.
+
+TED BARNETT: 
+## Now I see a new error.  The sendToOpenAI(text: textView.text) call in the function "recordButtonTapped" generates the error "Extra arguments at positions #1, #2 in call".  Do I need to rewrite the fuction "recordButtonTapped"?
+
+ChatGPT: 
+- Apologies for the confusion. It seems I made an error in a previous response. You should indeed call `sendToOpenAI(inputText: textView.text)` instead of `sendToOpenAI(text: textView.text)` in the `recordButtonTapped` function.
+
+Here's the corrected version of the `recordButtonTapped` function:
+
+```swift
+
+@objc func recordButtonTapped() {
+    if isRecording {
+        recordButton.setTitle("Start Recording", for: .normal)
+        isRecording = false
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+        sendToOpenAI(inputText: textView.text)
+    } else {
+        recordButton.setTitle("Stop Recording", for: .normal)
+        isRecording = true
+        startRecording()
+    }
+}
+```
+
+
+
+With this change, you should no longer encounter the "Extra arguments at positions #1, #2 in call" error, and your app should build and run correctly.
+
+TED BARNETT: 
+## But this was an @IBAction before.  Is it now an @objc function?
+
+ChatGPT: 
+- Apologies for the confusion. If you connected your `recordButton` as an `IBAction`, you should keep it that way.
+
+Here's the corrected version of the `recordButtonTapped` function as an `IBAction`:
+
+```swift
+
+@IBAction func recordButtonTapped(_ sender: UIButton) {
+    if isRecording {
+        recordButton.setTitle("Start Recording", for: .normal)
+        isRecording = false
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+        sendToOpenAI(inputText: textView.text)
+    } else {
+        recordButton.setTitle("Stop Recording", for: .normal)
+        isRecording = true
+        startRecording()
+    }
+}
+```
+
+
+
+This change should resolve any issues with the function being an `IBAction` or an `@objc` function. Your app should now build and run correctly.
+
+TED BARNETT: 
+## But this eliminates the code that appended the user input and AI response to the conversation history.  Don't I need that too?
+
+ChatGPT: 
+- You're right, I missed that part. I apologize for the confusion. Here's the corrected version of the `recordButtonTapped` function as an `IBAction`, including the code to append the user input and AI response to the conversation history:
+
+```swift
+
+@IBAction func recordButtonTapped(_ sender: UIButton) {
+    if isRecording {
+        recordButton.setTitle("Start Recording", for: .normal)
+        isRecording = false
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+
+        if let userText = textView.text {
+            let userInput = "You: \(userText)"
+            textView.text = textView.text + "\n" + userInput
+        }
+
+        sendToOpenAI(inputText: textView.text)
+
+    } else {
+        recordButton.setTitle("Stop Recording", for: .normal)
+        isRecording = true
+        startRecording()
+    }
+}
+```
+
+
+
+With this change, your app should now append the user input and AI response to the conversation history, and build and run correctly.
+
+TED BARNETT: 
+## Ah.  The response from OpenAI has the message "Cannot specify both model and engine".  My requestData reads as follows:         let requestData: [String: Any] = [
+            "model": "text-davinci-003",
+            "prompt": prompt,
+            "max_tokens": 150,
+            "n": 1,
+            "stop": ["\n"],
+            "temperature": 0.5
+        ]
+
+ChatGPT: 
+- I apologize for the confusion earlier. It seems I made an error in the API call URL. Since you are using the "text-davinci-003" model, the URL should be constructed using the "davinci-codex" engine. Please update the URL in the `sendToOpenAI` function to the following:
+
+```swift
+
+guard let url = URL(string: "https://api.openai.com/v1/engines/text-davinci-003/completions") else {
+    print("Error: Invalid URL")
+    return
+}
+```
+
+
+
+This change should resolve the "Cannot specify both model and engine" error in the OpenAI API response. Your app should now work correctly with the "text-davinci-003" model.
+
+TED BARNETT: 
+## How can I make sure that the text displayed is bold for the "You: " text that appears?
+
+ChatGPT: 
+- To make the "You: " text bold in the `UITextView`, you'll need to use an `NSMutableAttributedString` to apply the bold font style. Here's an updated version of the `recordButtonTapped` function that appends the bold "You: " text to the textView:
+
+```swift
+
+@IBAction func recordButtonTapped(_ sender: UIButton) {
+    if isRecording {
+        recordButton.setTitle("Start Recording", for: .normal)
+        isRecording = false
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+
+        if let userText = textView.text {
+            let boldFont = UIFont.boldSystemFont(ofSize: textView.font?.pointSize ?? UIFont.systemFontSize)
+            let regularFont = UIFont.systemFont(ofSize: textView.font?.pointSize ?? UIFont.systemFontSize)
+            let attributedUserInput = NSMutableAttributedString(string: "You: ", attributes: [NSAttributedString.Key.font: boldFont])
+            attributedUserInput.append(NSAttributedString(string: userText, attributes: [NSAttributedString.Key.font: regularFont]))
+            attributedUserInput.append(NSAttributedString(string: "\n"))
+            
+            let conversationHistory = NSMutableAttributedString(attributedString: textView.attributedText)
+            conversationHistory.append(attributedUserInput)
+            
+            textView.attributedText = conversationHistory
+        }
+
+        sendToOpenAI(inputText: textView.text)
+
+    } else {
+        recordButton.setTitle("Stop Recording", for: .normal)
+        isRecording = true
+        startRecording()
+    }
+}
+```
+
+
+
+In this updated version, we create an `NSMutableAttributedString` with the bold font for the "You: " text and the regular font for the user's input text. We then append this attributed string to the existing conversation history in the textView.
+
+With this change, the "You: " text should appear bold in the textView.
