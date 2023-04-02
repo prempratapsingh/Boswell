@@ -21,20 +21,24 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
-    let speechSynthesizer = AVSpeechSynthesizer()
-    private var conversationHistory: [String] = []
+    public let speechSynthesizer = AVSpeechSynthesizer()
+    private var conversationHistory: [NSAttributedString] = []
+
     
-    // Replace YOUR_API_KEY with your actual OpenAI API key
+    // Replace the key text below with your actual OpenAI API key
     let openAI_APIKey = "PASTE_IN_YOUR_OPENAI_API_KEY_HERE"
     
-    override func viewDidLoad() {
+    override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
-        
+    
+        // Makes textView border visible.  Might be good to turn this one if the textView gets "full" (i.e. scrolling needed).
         // self.textView.layer.borderColor = UIColor.lightGray.cgColor
         // self.textView.layer.borderWidth = 1
         
         requestMicrophoneAccess()
         configureSpeechRecognition()
+        let voices = AVSpeechSynthesisVoice.speechVoices()
+        print("Voice Count: \(voices.count)")
     }
     
     func requestMicrophoneAccess() {
@@ -124,24 +128,36 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             recognitionRequest?.endAudio()
             recordButton.isEnabled = false
             recordButton.setTitle("Start Recording", for: .normal)
-            
+
             sendToOpenAI(text: textView.text) { response, error in
                 DispatchQueue.main.async {
                     if let error = error {
                         self.textView.text = "Error: \(error.localizedDescription)"
                     } else if let response = response {
-                        let userInput = "You: \(self.textView.text ?? "")"
-                        let aiResponse = "AI: \(response)"
+                        let userInput = self.textView.text ?? ""
+                        let aiResponse = response
+
+                        // Remove "You: " and "AI: " from the userInput and aiResponse strings
+                        let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
+                        let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
+
+                        // Append the formatted user input and AI's response to the conversation history
+                        let font = UIFont.systemFont(ofSize: 24)
                         
-                        // Append the user input and AI's response to the conversation history
-                        self.conversationHistory.append(contentsOf: [userInput, aiResponse])
-                        
+                        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
+
+                        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributes)
+                        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: [.font: font])
+                        self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
+
                         // Update the text view with the full conversation history
-                        self.textView.text = self.conversationHistory.joined(separator: "\n")
-                        
-                        // Clear the listeningStatus
+                        let fullHistory = NSMutableAttributedString()
+                        for item in self.conversationHistory {
+                            fullHistory.append(item)
+                        }
+                        self.textView.attributedText = fullHistory
                         self.listeningStatus.text = ""
-                        
+
                         // Speak the AI's response
                         self.speak(text: aiResponse)
                     }
@@ -152,6 +168,9 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             recordButton.setTitle("Stop Recording", for: .normal)
         }
     }
+
+
+
 
 
     func sendToOpenAI(text: String, completion: @escaping (String?, Error?) -> Void) {
