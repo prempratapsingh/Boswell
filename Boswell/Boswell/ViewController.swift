@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Boswell
 //
-//  Created by Ted Barnett (with help from ChatGPT on 3/31/23.
+//  Created by Ted Barnett (with help from ChatGPT-4!) on 3/31/2023.
 //
 
 import UIKit
