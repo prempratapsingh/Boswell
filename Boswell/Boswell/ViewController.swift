@@ -15,6 +15,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var listeningStatus: UILabel!
+    //@IBOutlet weak var recordingText: UITextView!
     
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -37,8 +38,22 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         
         requestMicrophoneAccess()
         configureSpeechRecognition()
+        
+        // Debugging iOS voice problem
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
+        
+        //recordingText.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        //recordingText.isHidden = true
+        
+        
+        if traitCollection.userInterfaceStyle == .dark {
+            // iPhone is in Dark Mode
+        } else {
+            // iPhone is in Light Mode
+        }
+
+        
     }
     
     func requestMicrophoneAccess() {
@@ -119,6 +134,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         try? audioEngine.start()
 
         listeningStatus.text = "Listening..."
+        //recordingText.text = "" // clear prior text
+        //recordingText.isHidden = false
     }
 
     
@@ -143,11 +160,17 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
                         // Append the formatted user input and AI's response to the conversation history
                         let font = UIFont.systemFont(ofSize: 24)
+                        let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray, .font: UIFont.boldSystemFont(ofSize: 24)]
                         
-                        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
+                        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
+                        if self.traitCollection.userInterfaceStyle == .dark {
+                            // iPhone is in Dark Mode
+                            // attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.white, .font: UIFont.boldSystemFont(ofSize: 24)]
 
-                        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributes)
-                        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: [.font: font])
+                        }
+
+                        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
+                        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
                         self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
 
                         // Update the text view with the full conversation history
@@ -157,6 +180,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         }
                         self.textView.attributedText = fullHistory
                         self.listeningStatus.text = ""
+                        //self.recordingText.isHidden = true
 
                         // Speak the AI's response
                         self.speak(text: aiResponse)
