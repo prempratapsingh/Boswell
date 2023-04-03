@@ -2,7 +2,6 @@
 A ChatGPT-based iOS voice app written by ChatGPT-4 (with help from Ted Barnett).  Final version will include a personal life story interviewer that will generate a voice-and-text biography for the user.  Named after the 18th-century biographer [James Boswell](https://en.wikipedia.org/wiki/James_Boswell).
 
 v01: basic ChatGPT conversation (with voice) on iOS
-Future versions: See Issues list for future features
 
 Note: before running this app on your iPhone, you will need to edit ViewController.swift and replace the text "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" with a [valid OpenAI API key](https://platform.openai.com/account/api-keys).
 
