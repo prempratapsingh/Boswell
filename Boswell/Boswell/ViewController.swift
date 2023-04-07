@@ -4,6 +4,16 @@
 //
 //  Created by Ted Barnett (with help from ChatGPT-4!) on 3/31/2023.
 //
+// CODE SUMMARY (from ChatGPT-4):
+// Imports necessary libraries like UIKit, AVFoundation, Speech, and Foundation.
+// Sets up the ViewController class and its delegates for speech recognition.
+// Initializes and configures the speech recognizer, audio engine, and speech synthesizer.
+// Requests microphone access and configures speech recognition in viewDidLoad().
+// Implements the startRecording() function to start recording user speech.
+// Defines the recordButtonTapped() function, which toggles the recording state and sends the recorded speech to the ChatGPT API.
+// Creates the sendToOpenAI() function to send a POST request to the ChatGPT API, which returns the AI-generated response.
+// Implements the speak() function to convert the AI-generated text response into speech.
+//
 
 import UIKit
 import AVFoundation
@@ -140,12 +150,17 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
     
     @IBAction func recordButtonTapped(_ sender: UIButton) {
+        // Check if the audio engine is running (i.e., currently recording)
         if audioEngine.isRunning {
+            // Stop the audio engine and end the recognition request
             audioEngine.stop()
             recognitionRequest?.endAudio()
+            // Disable the record button temporarily
             recordButton.isEnabled = false
+            // Update the record button title to indicate recording has stopped
             recordButton.setTitle("Start Recording", for: .normal)
 
+            // Send the recorded speech to the ChatGPT API
             sendToOpenAI(text: textView.text) { response, error in
                 DispatchQueue.main.async {
                     if let error = error {
@@ -161,13 +176,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         // Append the formatted user input and AI's response to the conversation history
                         let font = UIFont.systemFont(ofSize: 24)
                         let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray, .font: UIFont.boldSystemFont(ofSize: 24)]
-                        
-                        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
-                        if self.traitCollection.userInterfaceStyle == .dark {
-                            // iPhone is in Dark Mode
-                            // attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.white, .font: UIFont.boldSystemFont(ofSize: 24)]
 
-                        }
+                        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
 
                         let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
                         let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
@@ -180,7 +190,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         }
                         self.textView.attributedText = fullHistory
                         self.listeningStatus.text = ""
-                        //self.recordingText.isHidden = true
 
                         // Speak the AI's response
                         self.speak(text: aiResponse)
@@ -188,7 +197,9 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                 }
             }
         } else {
+            // Start recording user speech
             startRecording()
+            // Update the record button title to indicate recording has started
             recordButton.setTitle("Stop Recording", for: .normal)
         }
     }
