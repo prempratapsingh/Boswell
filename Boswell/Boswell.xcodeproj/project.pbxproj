@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F8317D329DFAF0100392C25 /* openAI_APIKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F8317D229DFAF0100392C25 /* openAI_APIKey.plist */; };
 		2FA1920029D8D17B005F50E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA191FF29D8D17B005F50E5 /* AppDelegate.swift */; };
 		2FA1920229D8D17B005F50E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1920129D8D17B005F50E5 /* SceneDelegate.swift */; };
 		2FA1920429D8D17B005F50E5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA1920329D8D17B005F50E5 /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F8317D229DFAF0100392C25 /* openAI_APIKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = openAI_APIKey.plist; sourceTree = "<group>"; };
 		2FA191FC29D8D17B005F50E5 /* Boswell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Boswell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FA191FF29D8D17B005F50E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FA1920129D8D17B005F50E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				2FA191FF29D8D17B005F50E5 /* AppDelegate.swift */,
 				2FA1920129D8D17B005F50E5 /* SceneDelegate.swift */,
 				2FA1920329D8D17B005F50E5 /* ViewController.swift */,
+				2F8317D229DFAF0100392C25 /* openAI_APIKey.plist */,
 				2FA1920529D8D17B005F50E5 /* Main.storyboard */,
 				2FA1920B29D8D17C005F50E5 /* Assets.xcassets */,
 				2FA1920D29D8D17C005F50E5 /* LaunchScreen.storyboard */,
@@ -237,6 +240,7 @@
 				2FA1920F29D8D17C005F50E5 /* LaunchScreen.storyboard in Resources */,
 				2FA1920C29D8D17C005F50E5 /* Assets.xcassets in Resources */,
 				2FA1920729D8D17B005F50E5 /* Main.storyboard in Resources */,
+				2F8317D329DFAF0100392C25 /* openAI_APIKey.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -35,9 +35,19 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     public let speechSynthesizer = AVSpeechSynthesizer()
     private var conversationHistory: [NSAttributedString] = []
 
-    
-    // Replace the key text below with your actual OpenAI API key
-    let openAI_APIKey = "PASTE_IN_YOUR_OPENAI_API_KEY_HERE"
+    // let openAI_APIKey = "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" // old in-line version (replaced below)
+    // Load the OpenAI API key from the "openAI_APIKey.plist" file in the project's bundle.
+    // If it fails to load the key, it will throw a fatal error. Otherwise, it will return the loaded API key as a string
+    // Eventually replace this with a request from the user for their OpenAPI key, and save that in the openAI_APIKey.plist file.
+    let openAI_APIKey: String = {
+        guard let plistPath = Bundle.main.path(forResource: "openAI_APIKey", ofType: "plist"),
+            let plistDict = NSDictionary(contentsOfFile: plistPath),
+            let apiKey = plistDict["APIKey"] as? String else {
+                fatalError("Failed to load OpenAI API key from 'openAI_APIKey.plist'")
+        }
+        return apiKey
+    }()
+
     
     override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
