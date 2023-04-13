@@ -198,11 +198,22 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     func appendConversation(userInput: String, aiResponse: String) {
         // Remove "You: " and "AI: " from the userInput and aiResponse strings
         let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
-        let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
-        print("aiResponseNoPrefix = \(aiResponseNoPrefix)")
-        if (aiResponseNoPrefix == ""){
-            let aiResponseNoPrefix = "Sorry, could you repeat that?"
+        var modifiedUserInput = userInput.replacingOccurrences(of: "You: ", with: "")
+        if isQuestion(modifiedUserInput) {
+            modifiedUserInput += "?"
+        } else{
+            modifiedUserInput += "."
         }
+
+        
+        let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
+        print("aiResponseNoPrefix = '\(aiResponseNoPrefix)'")
+        var updatedAIResponse = aiResponseNoPrefix
+
+        if aiResponseNoPrefix.isEmpty {
+            updatedAIResponse = "Sorry, I did not hear that correctly. Please repeat."
+        }
+
 
         // Append the formatted user input and AI's response to the conversation history
         let font = UIFont.systemFont(ofSize: textSize)
@@ -211,8 +222,10 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
         let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(hex: "#aaaaaa"), .font: UIFont.boldSystemFont(ofSize: textSize)] // gray color
 
-        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
-        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
+        let formattedUserInput = NSAttributedString(string: modifiedUserInput + "\n", attributes: attributesUserText)
+
+        let formattedAIResponse = NSAttributedString(string: updatedAIResponse + "\n\n", attributes: attributesAIText)
+
         self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
 
         // Update the text view with the full conversation history
@@ -238,9 +251,9 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         let prompt = "You: \(text)\nAI:"
         let requestData: [String: Any] = [
             "prompt": prompt,
-            "max_tokens": 150,
+            "max_tokens": 500, // was 150, max is 2048
             "n": 1,
-            "stop": ["\n"],
+            // "stop": ["\n"], // removed to avoid problem of failing on a newline
             "temperature": 0.5
         ]
 
@@ -289,6 +302,20 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         speechUtterance.rate = 0.5
         speechSynthesizer.speak(speechUtterance)
     }
+    
+    func isQuestion(_ text: String) -> Bool {
+        let questionWords = ["who", "what", "where", "when", "why", "how"]
+        let words = text.lowercased().split(separator: " ")
+
+        if let firstWord = words.first {
+            let firstWordStripped = firstWord.trimmingCharacters(in: .punctuationCharacters)
+            if questionWords.contains(firstWordStripped) {
+                return true
+            }
+        }
+        return false
+    }
+
 }
 
 extension UIColor {
