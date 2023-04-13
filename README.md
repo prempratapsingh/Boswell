@@ -3,7 +3,7 @@ A ChatGPT-based iOS voice app written by ChatGPT-4 (with help from Ted Barnett).
 
 v01: basic ChatGPT conversation (with voice) on iOS
 
-Note: before running this app on your iPhone, you will need to edit ViewController.swift and replace the text "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" with a [valid OpenAI API key](https://platform.openai.com/account/api-keys).
+Note: To protect your OpenAI API key, you will need to rename the file "openAI_APIKey_PLACEHOLDER.plist" to "openAI_APIKey.plist" and replace the text "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" with a [valid OpenAI API key](https://platform.openai.com/account/api-keys).
 
 I'm not an experienced iOS or Swift developer.  I was only able to do this because ChatGPT knows how to code.  But I would appreciate any help with this project by more knowledgeable iOS developers.  See the Issues list if you are interested.
 
