@@ -26,8 +26,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var listeningStatus: UILabel!
     @IBOutlet weak var clearButton:UIButton!
-    //@IBOutlet weak var recordingText: UITextView!
-    
+
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
@@ -58,22 +57,10 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         requestMicrophoneAccess()
         configureSpeechRecognition()
         textView.font = UIFont.boldSystemFont(ofSize: textSize)
-
                 
         // Debugging iOS voice problem
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
-        
-        //recordingText.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        //recordingText.isHidden = true
-        
-        
-        if traitCollection.userInterfaceStyle == .dark {
-            // iPhone is in Dark Mode
-        } else {
-            // iPhone is in Light Mode
-        }
-
         
     }
     
@@ -118,9 +105,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         try? audioSession.setActive(true, options: .notifyOthersOnDeactivation)
 
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-
         let inputNode = audioEngine.inputNode
-
         guard let recognitionRequest = recognitionRequest else {
             fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
         }
@@ -129,7 +114,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
             var isFinal = false
-
             if let result = result {
                 // TODO: Ensure font color is gray
                 self.textView.textColor = UIColor(hex: "#aaaaaa") // Set text color to gray
@@ -147,15 +131,12 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                 self.recordButton.isEnabled = true
             }
         }
-
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, _) in
             self.recognitionRequest?.append(buffer)
         }
-
         audioEngine.prepare()
         try? audioEngine.start()
-
         listeningStatus.text = "Listening..."
     }
 
@@ -178,7 +159,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         self.textView.text = "Error: \(error.localizedDescription)"
                     } else if let response = response {
                         self.appendConversation(userInput: self.textView.text ?? "", aiResponse: response)
-
                         self.listeningStatus.text = "" // clear the listening status text field
 
                         // Speak the AI's response
@@ -197,7 +177,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     // Appends conversation text to textView
     func appendConversation(userInput: String, aiResponse: String) {
         // Remove "You: " and "AI: " from the userInput and aiResponse strings
-        let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
         var modifiedUserInput = userInput.replacingOccurrences(of: "You: ", with: "")
         if isQuestion(modifiedUserInput) {
             modifiedUserInput += "?"
@@ -205,7 +184,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             modifiedUserInput += "."
         }
 
-        
         let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
         print("aiResponseNoPrefix = '\(aiResponseNoPrefix)'")
         var updatedAIResponse = aiResponseNoPrefix
@@ -214,16 +192,10 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             updatedAIResponse = "Sorry, I did not hear that correctly. Please repeat."
         }
 
-
         // Append the formatted user input and AI's response to the conversation history
-        let font = UIFont.systemFont(ofSize: textSize)
-
         let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(hex: "#10a37f"), .font: UIFont.boldSystemFont(ofSize: textSize)] // greenish color
-
         let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(hex: "#aaaaaa"), .font: UIFont.boldSystemFont(ofSize: textSize)] // gray color
-
         let formattedUserInput = NSAttributedString(string: modifiedUserInput + "\n", attributes: attributesUserText)
-
         let formattedAIResponse = NSAttributedString(string: updatedAIResponse + "\n\n", attributes: attributesAIText)
 
         self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
@@ -321,8 +293,10 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 extension UIColor {
     convenience init(hex: String, alpha: CGFloat = 1.0) {
         let scanner = Scanner(string: hex)
-        scanner.scanLocation = hex.hasPrefix("#") ? 1 : 0
-
+        // scanner.scanLocation = hex.hasPrefix("#") ? 1 : 0
+        if hex.hasPrefix("#") {
+            scanner.currentIndex = hex.index(after: hex.startIndex)
+        }
         var rgbValue: UInt64 = 0
         scanner.scanHexInt64(&rgbValue)
 
