@@ -169,42 +169,17 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             recordButton.setTitle("Start Recording", for: .normal)
 
             // Send the recorded speech to the ChatGPT API
-            sendToOpenAI(text: textView.text) { response, error in
+            sendToChatGPT(text: textView.text) { response, error in
                 DispatchQueue.main.async {
                     if let error = error {
                         self.textView.text = "Error: \(error.localizedDescription)"
                     } else if let response = response {
-                        let userInput = self.textView.text ?? ""
-                        let aiResponse = response
-
-                        // Remove "You: " and "AI: " from the userInput and aiResponse strings
-                        let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
-                        let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
-
-                        // Append the formatted user input and AI's response to the conversation history
-                        let font = UIFont.systemFont(ofSize: 24)
-                        let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray, .font: UIFont.boldSystemFont(ofSize: 24)]
-
-                        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
-
-                        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
-                        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
-                        self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
-
-                        // Update the text view with the full conversation history
-                        let fullHistory = NSMutableAttributedString()
-                        for item in self.conversationHistory {
-                            fullHistory.append(item)
-                        }
-                        self.textView.attributedText = fullHistory // append this new prompt and response to the textView
-                        // Then scroll to bottom of textView per https://developer.apple.com/forums/thread/126549 (Swift 5)
-                        let range = NSMakeRange(self.textView.text.count - 1, 0)
-                        self.textView.scrollRangeToVisible(range)
+                        self.appendConversation(userInput: self.textView.text ?? "", aiResponse: response)
 
                         self.listeningStatus.text = "" // clear the listening status text field
 
                         // Speak the AI's response
-                        self.speak(text: aiResponse)
+                        self.speak(text: response)
                     }
                 }
             }
@@ -216,11 +191,36 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
     }
 
+    // Appends conversation text to textView
+    func appendConversation(userInput: String, aiResponse: String) {
+        // Remove "You: " and "AI: " from the userInput and aiResponse strings
+        let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
+        let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
 
+        // Append the formatted user input and AI's response to the conversation history
+        let font = UIFont.systemFont(ofSize: 24)
+        let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray, .font: UIFont.boldSystemFont(ofSize: 24)]
+
+        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
+
+        let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
+        let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
+        self.conversationHistory.append(contentsOf: [formattedUserInput, formattedAIResponse])
+
+        // Update the text view with the full conversation history
+        let fullHistory = NSMutableAttributedString()
+        for item in self.conversationHistory {
+            fullHistory.append(item)
+        }
+        self.textView.attributedText = fullHistory // append this new prompt and response to the textView
+        // Then scroll to bottom of textView per https://developer.apple.com/forums/thread/126549 (Swift 5)
+        let range = NSMakeRange(self.textView.text.count - 1, 0)
+        self.textView.scrollRangeToVisible(range)
+    }
 
 
 // Sends to OpenAI API, currently using GPT-3 model
-    func sendToOpenAI(text: String, completion: @escaping (String?, Error?) -> Void) {
+    func sendToChatGPT(text: String, completion: @escaping (String?, Error?) -> Void) {
         let url = URL(string: "https://api.openai.com/v1/engines/text-davinci-003/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
