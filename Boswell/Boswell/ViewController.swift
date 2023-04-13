@@ -35,6 +35,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     public let speechSynthesizer = AVSpeechSynthesizer()
     private var conversationHistory: [NSAttributedString] = []
+    private var textSize:CGFloat = 20
+    // NOTE: OpenAI corporate green color is RGB 16, 163, 127 (or #10a37f)
 
     // let openAI_APIKey = "PASTE_IN_YOUR_OPENAI_API_KEY_HERE" // old in-line version (replaced below)
     // Load the OpenAI API key from the "openAI_APIKey.plist" file in the project's bundle.
@@ -55,7 +57,9 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         
         requestMicrophoneAccess()
         configureSpeechRecognition()
-        
+        textView.font = UIFont.boldSystemFont(ofSize: textSize)
+
+                
         // Debugging iOS voice problem
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
@@ -127,7 +131,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             var isFinal = false
 
             if let result = result {
-                // TODO: Ensure font color is blue
+                // TODO: Ensure font color is gray
+                self.textView.textColor = UIColor(hex: "#aaaaaa") // Set text color to gray
                 self.textView.text = result.bestTranscription.formattedString
                 isFinal = result.isFinal
             }
@@ -152,8 +157,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         try? audioEngine.start()
 
         listeningStatus.text = "Listening..."
-        //recordingText.text = "" // clear prior text
-        //recordingText.isHidden = false
     }
 
     
@@ -196,12 +199,17 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         // Remove "You: " and "AI: " from the userInput and aiResponse strings
         let userInputNoPrefix = userInput.replacingOccurrences(of: "You: ", with: "")
         let aiResponseNoPrefix = aiResponse.replacingOccurrences(of: "AI: ", with: "")
+        print("aiResponseNoPrefix = \(aiResponseNoPrefix)")
+        if (aiResponseNoPrefix == ""){
+            let aiResponseNoPrefix = "Sorry, could you repeat that?"
+        }
 
         // Append the formatted user input and AI's response to the conversation history
-        let font = UIFont.systemFont(ofSize: 24)
-        let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray, .font: UIFont.boldSystemFont(ofSize: 24)]
+        let font = UIFont.systemFont(ofSize: textSize)
 
-        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont.boldSystemFont(ofSize: 24)]
+        let attributesAIText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(hex: "#10a37f"), .font: UIFont.boldSystemFont(ofSize: textSize)] // greenish color
+
+        let attributesUserText: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(hex: "#aaaaaa"), .font: UIFont.boldSystemFont(ofSize: textSize)] // gray color
 
         let formattedUserInput = NSAttributedString(string: userInputNoPrefix + "\n", attributes: attributesUserText)
         let formattedAIResponse = NSAttributedString(string: aiResponseNoPrefix + "\n\n", attributes: attributesAIText)
@@ -238,7 +246,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
         request.httpBody = try? JSONSerialization.data(withJSONObject: requestData, options: [])
         
-        // print("Sending to OpenAI: \(requestData)")
+        print("Sending to OpenAI: \(requestData)")
         
         self.listeningStatus.text = "Thinking..."
 
@@ -268,6 +276,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @IBAction func clearButtonTapped(_ sender: UIButton) {
         self.textView.text = "" // clear the text area if clearButton pressed
+        self.conversationHistory = []
         listeningStatus.text = "Cleared screen"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.listeningStatus.text = ""
@@ -279,5 +288,21 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         speechUtterance.rate = 0.5
         speechSynthesizer.speak(speechUtterance)
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = hex.hasPrefix("#") ? 1 : 0
+
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+
+        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
