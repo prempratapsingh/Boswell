@@ -5,8 +5,8 @@
 ## User settings
 xcuserdata/
 
-## do not upload API key
-openAI_APIKey.plist
+## do not plist files for this repo
+*.plist
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
