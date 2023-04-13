@@ -47,11 +47,21 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button toolTip="Tap to clear chat" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYz-NJ-jv2">
+                                <rect key="frame" x="307" y="0.0" width="86" height="158"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="clearButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Iz6-KB-cLb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
+                        <outlet property="clearButton" destination="QYz-NJ-jv2" id="c9Q-Ch-b0o"/>
                         <outlet property="listeningStatus" destination="LlR-ge-h2D" id="slX-i9-868"/>
                         <outlet property="recordButton" destination="ioz-Ka-ci4" id="Za9-9i-CDF"/>
                         <outlet property="textView" destination="PTt-bR-jte" id="ojk-Zg-s6n"/>

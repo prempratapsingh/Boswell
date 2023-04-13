@@ -25,6 +25,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var listeningStatus: UILabel!
+    @IBOutlet weak var clearButton:UIButton!
     //@IBOutlet weak var recordingText: UITextView!
     
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
@@ -51,10 +52,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
-    
-        // Makes textView border visible.  Might be good to turn this one if the textView gets "full" (i.e. scrolling needed).
-        // self.textView.layer.borderColor = UIColor.lightGray.cgColor
-        // self.textView.layer.borderWidth = 1
         
         requestMicrophoneAccess()
         configureSpeechRecognition()
@@ -130,6 +127,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             var isFinal = false
 
             if let result = result {
+                // TODO: Ensure font color is blue
                 self.textView.text = result.bestTranscription.formattedString
                 isFinal = result.isFinal
             }
@@ -198,8 +196,12 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         for item in self.conversationHistory {
                             fullHistory.append(item)
                         }
-                        self.textView.attributedText = fullHistory
-                        self.listeningStatus.text = ""
+                        self.textView.attributedText = fullHistory // append this new prompt and response to the textView
+                        // Then scroll to bottom of textView per https://developer.apple.com/forums/thread/126549 (Swift 5)
+                        let range = NSMakeRange(self.textView.text.count - 1, 0)
+                        self.textView.scrollRangeToVisible(range)
+
+                        self.listeningStatus.text = "" // clear the listening status text field
 
                         // Speak the AI's response
                         self.speak(text: aiResponse)
@@ -217,7 +219,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
 
 
 
-
+// Sends to OpenAI API, currently using GPT-3 model
     func sendToOpenAI(text: String, completion: @escaping (String?, Error?) -> Void) {
         let url = URL(string: "https://api.openai.com/v1/engines/text-davinci-003/completions")!
         var request = URLRequest(url: url)
@@ -253,7 +255,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         completion(text.trimmingCharacters(in: .whitespacesAndNewlines), nil)
                         print("text is: \(text)")
                     } else {
-                        // print("Raw response from OpenAI: \(String(data: data, encoding: .utf8) ?? "Unable to decode response")")
+                        print("Raw response from OpenAI: \(String(data: data, encoding: .utf8) ?? "Unable to decode response")")
                         completion(nil, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
                     }
                 } catch {
@@ -263,7 +265,14 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
         task.resume()
     }
-
+    
+    @IBAction func clearButtonTapped(_ sender: UIButton) {
+        self.textView.text = "" // clear the text area if clearButton pressed
+        listeningStatus.text = "Cleared screen"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.listeningStatus.text = ""
+        }
+    }
     
     func speak(text: String) {
         let speechUtterance = AVSpeechUtterance(string: text)

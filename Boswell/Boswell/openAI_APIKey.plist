@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>APIKey</key>
-	<string>PASTE_IN_YOUR_OPENAI_API_KEY_HERE_</string>
+	<string>Testing string change</string>
 </dict>
 </plist>
