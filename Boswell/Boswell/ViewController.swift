@@ -32,7 +32,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
-    public let speechSynthesizer = AVSpeechSynthesizer()
+    public let speechSynthesizer = AVSpeechSynthesizer.init() // added .init per this example: https://developer.apple.com/forums/thread/717355
     private var conversationHistory: [NSAttributedString] = []
     private var textSize:CGFloat = 20
     // NOTE: OpenAI corporate green color is RGB 16, 163, 127 (or #10a37f)
@@ -61,6 +61,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         // Debugging iOS voice problem
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
+        // print("Voice List: \(voices)")
+        self.speak(text: "Welcome to Boswell.")
         
     }
     
@@ -92,6 +94,24 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                 }
             }
         }
+    }
+    
+    // text-to-speech working in Simulator but not on iOS 16
+    // Try this example: https://www.appcoda.com/text-to-speech-swiftui/
+    func speak(text: String) {
+        let speechUtterance = AVSpeechUtterance(string: text)
+        speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-UK") // or "en-US" or other
+        speechUtterance.rate = 0.5
+        speechSynthesizer.speak(speechUtterance)
+        
+        // TODO: Tested do{} below per https://stackoverflow.com/questions/49208291/failure-starting-audio-queue-%E2%89%A5%CB%9A%CB%9B%CB%87
+        // Adding this worked, but the volume is very low
+        // https://developer.apple.com/documentation/avfaudio/avaudiosession/1616503-categoryoptions
+        do{
+            let _ = try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: .duckOthers) // or mixWithOthers or duckOthers or defaultToSpeaker or interruptSpokenAudioAndMixWithOthers (suggested duckOthers)
+          }catch{
+              print(error)
+          }
     }
     
     func startRecording() {
@@ -160,7 +180,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                     } else if let response = response {
                         self.appendConversation(userInput: self.textView.text ?? "", aiResponse: response)
                         self.listeningStatus.text = "" // clear the listening status text field
-
+                        
                         // Speak the AI's response
                         self.speak(text: response)
                     }
@@ -268,12 +288,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
     }
     
-    func speak(text: String) {
-        let speechUtterance = AVSpeechUtterance(string: text)
-        speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        speechUtterance.rate = 0.5
-        speechSynthesizer.speak(speechUtterance)
-    }
+    
+
     
     func isQuestion(_ text: String) -> Bool {
         let questionWords = ["who", "what", "where", "when", "why", "how"]
