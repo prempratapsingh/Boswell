@@ -32,6 +32,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
+    var audioPlayer: AVPlayer?
+    
     public let speechSynthesizer = AVSpeechSynthesizer.init() // added .init per this example: https://developer.apple.com/forums/thread/717355
     private var conversationHistory: [NSAttributedString] = []
     private var textSize:CGFloat = 20
@@ -54,6 +56,10 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
         
+        setupAudioSession()
+        // self.speakElevenLabs(text: "Hello.  I am Ted Barnett.  I will be your Boswell today.")
+        self.speakApple(text: "Hello.  I am Boswell.")
+        
         requestMicrophoneAccess()
         configureSpeechRecognition()
         textView.font = UIFont.boldSystemFont(ofSize: textSize)
@@ -61,8 +67,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         // Debugging iOS voice problem
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
-        // print("Voice List: \(voices)")
-        self.speak(text: "Welcome to Boswell.")
         
     }
     
@@ -96,9 +100,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
     }
     
-    // text-to-speech working in Simulator but not on iOS 16
-    // Try this example: https://www.appcoda.com/text-to-speech-swiftui/
-    func speak(text: String) {
+    func speakApple(text: String) {
         let speechUtterance = AVSpeechUtterance(string: text)
         speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-UK") // or "en-US" or other
         speechUtterance.rate = 0.5
@@ -109,10 +111,78 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         // https://developer.apple.com/documentation/avfaudio/avaudiosession/1616503-categoryoptions
         do{
             let _ = try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: .duckOthers) // or mixWithOthers or duckOthers or defaultToSpeaker or interruptSpokenAudioAndMixWithOthers (suggested duckOthers)
+            //try AVAudioSession.overrideOutputAudioPort(.speaker)
           }catch{
               print(error)
           }
     }
+    
+    func setupAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .default, options: [])
+            try audioSession.setActive(true, options: [])
+        } catch {
+            print("Error setting up audio session: \(error)")
+        }
+    }
+    
+    func speakElevenLabs(text: String) {
+        let headers = [
+            "accept": "audio/mpeg",
+            "xi-api-key": "e50ff3b100f941ab66660e95e6e61b14",
+            "Content-Type": "application/json"
+        ]
+        let parameters = [
+            "text": text,
+            "voice_settings": [
+                "stability": 0,
+                "similarity_boost": 0
+            ]
+        ] as [String : Any]
+        
+        do {
+            let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            
+            let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/text-to-speech/qNMd2sqYoNuUgtQXrz7j")! as URL,
+                                              cachePolicy: .useProtocolCachePolicy,
+                                              timeoutInterval: 10.0)
+            request.httpMethod = "POST"
+            request.allHTTPHeaderFields = headers
+            request.httpBody = postData as Data
+            
+            let session = URLSession.shared
+            let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { [weak self] (data, response, error) -> Void in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        print(error)
+                    } else if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                        do {
+                            // Save data to a temporary file
+                            let tempURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("tempAudio.mp3")
+                            // let tempURL = URL("//Users/tedbarnett/Desktop/tempAudio.mp3")
+                            try data.write(to: tempURL)
+                            print("tempURL is \(tempURL)")
+                            
+                            // Play audio using AVPlayer
+                            self?.audioPlayer = AVPlayer(url: tempURL)
+                            self?.audioPlayer?.play()
+                        } catch {
+                            print("Error playing audio: \(error)")
+                        }
+                    } else {
+                        print("Unexpected response or data is nil")
+                    }
+                }
+            })
+            
+            dataTask.resume()
+        } catch {
+            print("Error serializing JSON: \(error)")
+        }
+    }
+
+    
     
     func startRecording() {
         if recognitionTask != nil {
@@ -182,7 +252,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         self.listeningStatus.text = "" // clear the listening status text field
                         
                         // Speak the AI's response
-                        self.speak(text: response)
+                        self.speakApple(text: response)
+                        //self.speakElevenLabs(text: response)
                     }
                 }
             }
@@ -287,9 +358,6 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             self.listeningStatus.text = ""
         }
     }
-    
-    
-
     
     func isQuestion(_ text: String) -> Bool {
         let questionWords = ["who", "what", "where", "when", "why", "how"]
