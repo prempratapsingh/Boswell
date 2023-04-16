@@ -4,16 +4,6 @@
 //
 //  Created by Ted Barnett (with help from ChatGPT-4!) on 3/31/2023.
 //
-// CODE SUMMARY (from ChatGPT-4):
-// Imports necessary libraries like UIKit, AVFoundation, Speech, and Foundation.
-// Sets up the ViewController class and its delegates for speech recognition.
-// Initializes and configures the speech recognizer, audio engine, and speech synthesizer.
-// Requests microphone access and configures speech recognition in viewDidLoad().
-// Implements the startRecording() function to start recording user speech.
-// Defines the recordButtonTapped() function, which toggles the recording state and sends the recorded speech to the ChatGPT API.
-// Creates the sendToOpenAI() function to send a POST request to the ChatGPT API, which returns the AI-generated response.
-// Implements the speak() function to convert the AI-generated text response into speech.
-//
 
 import UIKit
 import AVFoundation
@@ -107,12 +97,13 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         speechSynthesizer.speak(speechUtterance)
         
         // TODO: Tested do{} below per https://stackoverflow.com/questions/49208291/failure-starting-audio-queue-%E2%89%A5%CB%9A%CB%9B%CB%87
-        // Adding this worked, but the volume is very low
         // https://developer.apple.com/documentation/avfaudio/avaudiosession/1616503-categoryoptions
         do{
-            let _ = try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: .duckOthers) // or mixWithOthers or duckOthers or defaultToSpeaker or interruptSpokenAudioAndMixWithOthers (suggested duckOthers)
-            //try AVAudioSession.overrideOutputAudioPort(.speaker)
-          }catch{
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.defaultToSpeaker, .duckOthers]) // or mixWithOthers or duckOthers or defaultToSpeaker or interruptSpokenAudioAndMixWithOthers (suggested duckOthers)
+            try audioSession.setActive(true)
+
+        }catch{
               print(error)
           }
     }
@@ -120,8 +111,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     func setupAudioSession() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(.playback, mode: .default, options: [])
-            try audioSession.setActive(true, options: [])
+            try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .duckOthers])
+            try audioSession.setActive(true)
         } catch {
             print("Error setting up audio session: \(error)")
         }
@@ -253,7 +244,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                         
                         // Speak the AI's response
                         self.speakApple(text: response)
-                        //self.speakElevenLabs(text: response)
+                        // self.speakElevenLabs(text: response)
                     }
                 }
             }
