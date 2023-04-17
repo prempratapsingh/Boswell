@@ -22,6 +22,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
     
+    private var tapGestureRecognizer: UITapGestureRecognizer?
+    
     var audioPlayer: AVPlayer?
     
     public let speechSynthesizer = AVSpeechSynthesizer.init() // added .init per this example: https://developer.apple.com/forums/thread/717355
@@ -42,10 +44,15 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         return apiKey
     }()
 
+    deinit {
+        guard let tapGestureRecognizer = self.tapGestureRecognizer else { return }
+        self.view.removeGestureRecognizer(tapGestureRecognizer)
+    }
     
     override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
         self.configureView()
+        self.addGestureRecognizer()
         
         setupAudioSession()
         // self.speakElevenLabs(text: "Hello.  I am Ted Barnett.  I will be your Boswell today.")
@@ -67,6 +74,21 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         self.textView.layer.cornerRadius = 8
         
         self.recordButton.layer.cornerRadius = 12
+    }
+    
+    private func addGestureRecognizer() {
+        if self.tapGestureRecognizer == nil {
+            self.tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(didTapOnMainView)
+            )
+            self.tapGestureRecognizer?.numberOfTapsRequired = 1
+        }
+        self.view.addGestureRecognizer(self.tapGestureRecognizer!)
+    }
+    
+    @objc private func didTapOnMainView() {
+        self.view.endEditing(true)
     }
     
     func requestMicrophoneAccess() {

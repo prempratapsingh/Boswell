@@ -43,7 +43,7 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="always" text="This is demo text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PTt-bR-jte">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="always" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PTt-bR-jte">
                                 <rect key="frame" x="24" y="169" width="345" height="545"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <inset key="scrollIndicatorInsets" minX="16" minY="16" maxX="16" maxY="16"/>
