@@ -16,49 +16,74 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PTt-bR-jte">
-                                <rect key="frame" x="8" y="169" width="377" height="553"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="systemBlueColor"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Boswell" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-yX-UQ1">
-                                <rect key="frame" x="143" y="78" width="106" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Boswell" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-yX-UQ1">
+                                <rect key="frame" x="143.66666666666666" y="79" width="106" height="35"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioz-Ka-ci4">
-                                <rect key="frame" x="78" y="751" width="237" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button toolTip="Tap to clear chat" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYz-NJ-jv2">
+                                <rect key="frame" x="307" y="76.666666666666671" width="70" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1kZ-9P-e1O"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="hx1-t1-D6D"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Click to Record a Prompt"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Clear"/>
                                 <connections>
-                                    <action selector="recordButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QMC-3P-vlD"/>
+                                    <action selector="clearButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Iz6-KB-cLb"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your Personal Biographer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlR-ge-h2D">
-                                <rect key="frame" x="66" y="108" width="261" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Personal Biographer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlR-ge-h2D">
+                                <rect key="frame" x="95.000000000000014" y="113" width="203.33333333333337" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="kTd-MC-EkU"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button toolTip="Tap to clear chat" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYz-NJ-jv2">
-                                <rect key="frame" x="307" y="0.0" width="86" height="158"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="always" text="This is demo text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PTt-bR-jte">
+                                <rect key="frame" x="24" y="169" width="345" height="545"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <inset key="scrollIndicatorInsets" minX="16" minY="16" maxX="16" maxY="16"/>
+                                <color key="textColor" systemColor="systemBlueColor"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioz-Ka-ci4">
+                                <rect key="frame" x="24" y="746" width="345" height="48"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="C3n-AA-SRT"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Click to Record a Prompt">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
-                                    <action selector="clearButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Iz6-KB-cLb"/>
+                                    <action selector="recordButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QMC-3P-vlD"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ioz-Ka-ci4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0z7-FN-AAa"/>
+                            <constraint firstItem="PTt-bR-jte" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="3nS-7G-MO7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ioz-Ka-ci4" secondAttribute="trailing" constant="24" id="B1T-gR-2ii"/>
+                            <constraint firstItem="LlR-ge-h2D" firstAttribute="top" secondItem="UNi-yX-UQ1" secondAttribute="bottom" constant="-1" id="ICQ-6k-RF3"/>
+                            <constraint firstItem="PTt-bR-jte" firstAttribute="top" secondItem="LlR-ge-h2D" secondAttribute="bottom" constant="16" id="L8w-eP-IGG"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PTt-bR-jte" secondAttribute="trailing" constant="24" id="M3w-1g-Qz2"/>
+                            <constraint firstItem="LlR-ge-h2D" firstAttribute="centerX" secondItem="UNi-yX-UQ1" secondAttribute="centerX" id="NYG-8b-a8R"/>
+                            <constraint firstItem="QYz-NJ-jv2" firstAttribute="centerY" secondItem="UNi-yX-UQ1" secondAttribute="centerY" id="Rlq-mV-il7"/>
+                            <constraint firstItem="UNi-yX-UQ1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wt9-Te-4RR"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ioz-Ka-ci4" secondAttribute="bottom" constant="24" id="aPi-wP-9iH"/>
+                            <constraint firstItem="ioz-Ka-ci4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="sR4-7W-ZS3"/>
+                            <constraint firstItem="ioz-Ka-ci4" firstAttribute="top" secondItem="PTt-bR-jte" secondAttribute="bottom" constant="32" id="xRB-k9-SJg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QYz-NJ-jv2" secondAttribute="trailing" constant="16" id="yMC-0O-IQd"/>
+                            <constraint firstItem="UNi-yX-UQ1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="yi9-tV-8jw"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="clearButton" destination="QYz-NJ-jv2" id="c9Q-Ch-b0o"/>

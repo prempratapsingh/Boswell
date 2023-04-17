@@ -45,6 +45,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     override func viewDidLoad() { //viewDidLoad
         super.viewDidLoad()
+        self.configureView()
         
         setupAudioSession()
         // self.speakElevenLabs(text: "Hello.  I am Ted Barnett.  I will be your Boswell today.")
@@ -58,6 +59,14 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         let voices = AVSpeechSynthesisVoice.speechVoices()
         print("Voice Count: \(voices.count)")
         
+    }
+    
+    private func configureView() {
+        self.textView.layer.borderWidth = 1
+        self.textView.layer.borderColor = UIColor.systemGray.cgColor
+        self.textView.layer.cornerRadius = 8
+        
+        self.recordButton.layer.cornerRadius = 12
     }
     
     func requestMicrophoneAccess() {
